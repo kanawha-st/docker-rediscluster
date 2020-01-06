@@ -22,3 +22,4 @@ RUN { \
     > /usr/local/bin/docker-entrypoint.sh; \
   }
 
+CMD ["tail", "-f", "/dev/null"]
