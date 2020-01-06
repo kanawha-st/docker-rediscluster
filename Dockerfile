@@ -23,3 +23,6 @@ RUN { \
   }
 
 CMD ["tail", "-f", "/dev/null"]
+EXPOSE 6379 
+EXPOSE 6380 
+EXPOSE 6381
