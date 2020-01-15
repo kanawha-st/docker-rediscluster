@@ -6,6 +6,7 @@ RUN { \
     cluster-config-file  nodes.conf\n \
     cluster-node-timeout 5000' > /etc/redis.conf && \
   echo -e '#!/bin/ash\n \
+    IPADDR=`getent hosts ${HOSTNAME} | cut -d" " -f1`\n\
     redis-server /etc/redis.conf --port 6379 &\n\
     mkdir sub1\ncd sub1\n\
     redis-server /etc/redis.conf --port 6380 &\n\
@@ -15,8 +16,8 @@ RUN { \
     redis-cli -p 6379 cluster addslots $(seq 0 5500)\n\
     redis-cli -p 6380 cluster addslots $(seq 5501 11000)\n\
     redis-cli -p 6381 cluster addslots $(seq 11001 16383)\n\
-    redis-cli -p 6380 cluster meet 127.0.0.1 6379\n\
-    redis-cli -p 6381 cluster meet 127.0.0.1 6379\n\
+    redis-cli -p 6380 cluster meet ${IPADDR} 6379\n\
+    redis-cli -p 6381 cluster meet ${IPADDR} 6379\n\
     \n \
     exec "$@"' \
     > /usr/local/bin/docker-entrypoint.sh; \
